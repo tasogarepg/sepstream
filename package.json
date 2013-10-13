@@ -1,0 +1,19 @@
+{
+  "name": "sepstream",
+  "version": "0.1.0",
+  "description": "A stream separating utility",
+  "keywords": ["stream", "separate", "split", "line"],
+  "author": "tasogarepg <tasogare.pg@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/tasogarepg/sepstream",
+  "repository": "git://github.com/tasogarepg/sepstream.git",
+  "main": "lib/sepstream.js",
+  "engines": { "node": ">= 0.10.0" },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
