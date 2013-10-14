@@ -58,6 +58,20 @@ fs.createReadStream('/path/to/file1')
 }))
 ```
 
+### Error handling
+```js
+var fs = require('fs');
+var sepstream = require('sepstream');
+
+fs.createReadStream('/path/to/file1')
+.pipe(sepstream(function(data) {
+  throw new Error('error1');
+}))
+.on('error', function (err) {
+  console.log(err.message);   // error1
+})
+```
+
 ## License
 
 The MIT License
