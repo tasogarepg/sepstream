@@ -45,6 +45,19 @@ fs.createReadStream('/path/to/file1')
 }))
 ```
 
+### set binary separator
+```js
+var fs = require('fs');
+var SepStream = require('sepstream');
+
+fs.createReadStream('/path/to/file1')
+.pipe(new SepStream(function(data) {
+  console.log(data.toString());
+}, {
+  sep: new Buffer([0x32, 0x33, 0x34])
+}))
+```
+
 ## License
 
 The MIT License
