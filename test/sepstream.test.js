@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var domain = require('domain');
 var assert = require('assert');
 var SepStream = require('..');
 
@@ -379,32 +378,26 @@ describe('sepstream', function() {
   });
 
   it('throw exception from _transform()', function(done) {
-    var d = domain.create();
-    d.on('error', function(err) {
+    var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
+    fs.createReadStream(fileIn)
+    .pipe(new SepStream(function(data) {
+      throw new Error('error1');
+    }))
+    .on('error', function (err) {
       assert.equal(err.message, 'error1');
       done();
-    });
-    d.run(function() {
-      var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
-      fs.createReadStream(fileIn)
-      .pipe(new SepStream(function(data) {
-        throw new Error('error1');
-      }))
     });
   });
 
   it('throw exception from _flush()', function(done) {
-    var d = domain.create();
-    d.on('error', function(err) {
+    var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
+    fs.createReadStream(fileIn)
+    .pipe(new SepStream(function(data) {
+      throw new Error('error1');
+    }))
+    .on('error', function (err) {
       assert.equal(err.message, 'error1');
       done();
-    });
-    d.run(function() {
-      var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
-      fs.createReadStream(fileIn)
-      .pipe(new SepStream(function(data) {
-        throw new Error('error1');
-      }))
     });
   });
 
