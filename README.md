@@ -9,10 +9,10 @@ A stream separating utility for Node.js.
 ## Usage
 ```js
 var fs = require('fs');
-var SepStream = require('sepstream');
+var sepstream = require('sepstream');
 
 fs.createReadStream('/path/to/file1')
-.pipe(new SepStream(function(data) {
+.pipe(sepstream(function(data) {
   // data comes for every line.
   console.log(data.toString());
 }))
@@ -21,10 +21,10 @@ fs.createReadStream('/path/to/file1')
 ### pipe
 ```js
 var fs = require('fs');
-var SepStream = require('sepstream');
+var sepstream = require('sepstream');
 
 fs.createReadStream('/path/to/file1')
-.pipe(new SepStream(function(data) {
+.pipe(sepstream(function(data) {
   var str = data.toString();          // data comes for every line.
   str = str.replace(/abcd/, 'efgh');  // modify str
   return str;                         // send to next pipe
@@ -35,10 +35,10 @@ fs.createReadStream('/path/to/file1')
 ### set separator
 ```js
 var fs = require('fs');
-var SepStream = require('sepstream');
+var sepstream = require('sepstream');
 
 fs.createReadStream('/path/to/file1')
-.pipe(new SepStream(function(data) {
+.pipe(sepstream(function(data) {
   console.log(data.toString());
 }, {
   sep: '\r\n'   // set separator. default: '\n'
@@ -48,10 +48,10 @@ fs.createReadStream('/path/to/file1')
 ### set binary separator
 ```js
 var fs = require('fs');
-var SepStream = require('sepstream');
+var sepstream = require('sepstream');
 
 fs.createReadStream('/path/to/file1')
-.pipe(new SepStream(function(data) {
+.pipe(sepstream(function(data) {
   console.log(data);
 }, {
   sep: new Buffer([0x32, 0x33, 0x34])
