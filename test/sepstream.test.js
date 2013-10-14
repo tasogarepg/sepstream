@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
-var SepStream = require('..');
+var sepstream = require('..');
 
 var fileOut = path.join(__dirname, 'out.dat');
 
@@ -13,7 +13,7 @@ describe('sepstream', function() {
   it('simple pipe utf8.txt', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', 'utf8.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -28,7 +28,7 @@ describe('sepstream', function() {
   it('simple pipe sjis.txt', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', 'sjis.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -43,7 +43,7 @@ describe('sepstream', function() {
   it('simple pipe 4x1.txt', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -58,7 +58,7 @@ describe('sepstream', function() {
   it('simple pipe 10x4.txt', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -75,7 +75,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       highWaterMark: 8
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }, {
       highWaterMark: 8
@@ -96,7 +96,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       highWaterMark: 8
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }, {
       highWaterMark: 16
@@ -117,7 +117,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       highWaterMark: 16
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }, {
       highWaterMark: 8
@@ -136,7 +136,7 @@ describe('sepstream', function() {
   it('change data at func 4x1.txt', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data.toString().replace(/0|2/g, '1');
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -150,7 +150,7 @@ describe('sepstream', function() {
   it('change data at func 10x4.txt', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data.toString().replace(/0123456789/, 'abcdefghij');
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -166,7 +166,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       highWaterMark: 8
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data.toString().replace(/0123456789/, 'abcdefghij');
     }, {
       highWaterMark: 8
@@ -186,7 +186,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       highWaterMark: 8
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data.toString().replace(/0123456789/, 'abcdefghij');
     }, {
       highWaterMark: 16
@@ -206,7 +206,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       highWaterMark: 16
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data.toString().replace(/0123456789/, 'abcdefghij');
     }, {
       highWaterMark: 8
@@ -224,7 +224,7 @@ describe('sepstream', function() {
   it('func not return val', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', 'utf8.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       ;
     }))
     .pipe(fs.createWriteStream(fileOut))
@@ -239,7 +239,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
       var expected = '0123456789' + ((count !== 4) ? '\n' : '');
       assert.equal(data.toString(), expected);
@@ -254,7 +254,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', 'utf8.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
     }))
     .on('finish', function() {
@@ -267,7 +267,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', 'sjis.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
     }))
     .on('finish', function() {
@@ -280,7 +280,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
       var expected;
       if (count === 1) expected = '012';
@@ -300,7 +300,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
       var expected;
       if (count === 1) expected = '01234';
@@ -320,7 +320,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
       var expected;
       if (count === 1) expected = '012';
@@ -340,7 +340,7 @@ describe('sepstream', function() {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       count++;
       var expected;
       if (count === 1) expected = '01234';
@@ -361,7 +361,7 @@ describe('sepstream', function() {
     fs.createReadStream(fileIn, {
       encoding: 'utf8'
     })
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       return data;
     }, {
       encoding: 'utf8'
@@ -380,7 +380,7 @@ describe('sepstream', function() {
   it('throw exception from _transform()', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       throw new Error('error1');
     }))
     .on('error', function (err) {
@@ -392,7 +392,7 @@ describe('sepstream', function() {
   it('throw exception from _flush()', function(done) {
     var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
     fs.createReadStream(fileIn)
-    .pipe(new SepStream(function(data) {
+    .pipe(sepstream(function(data) {
       throw new Error('error1');
     }))
     .on('error', function (err) {
