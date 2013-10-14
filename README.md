@@ -52,7 +52,7 @@ var SepStream = require('sepstream');
 
 fs.createReadStream('/path/to/file1')
 .pipe(new SepStream(function(data) {
-  console.log(data.toString());
+  console.log(data);
 }, {
   sep: new Buffer([0x32, 0x33, 0x34])
 }))
