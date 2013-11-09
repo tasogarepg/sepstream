@@ -158,7 +158,7 @@ describe('sepstream', function() {
     var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
-      return data.toString().replace(/0|2/g, '1');
+      return new Buffer(data.toString().replace(/0|2/g, '1'));
     }))
     .pipe(fs.createWriteStream(fileOut))
     .on('finish', function() {
@@ -173,7 +173,7 @@ describe('sepstream', function() {
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
-      return data.toString().replace(/0123456789/, 'abcdefghij');
+      return new Buffer(data.toString().replace(/0123456789/, 'abcdefghij'));
     }))
     .pipe(fs.createWriteStream(fileOut))
     .on('finish', function() {
@@ -190,7 +190,7 @@ describe('sepstream', function() {
       highWaterMark: 8
     })
     .pipe(sepstream(function(data) {
-      return data.toString().replace(/0123456789/, 'abcdefghij');
+      return new Buffer(data.toString().replace(/0123456789/, 'abcdefghij'));
     }, {
       highWaterMark: 8
     }))
@@ -211,7 +211,7 @@ describe('sepstream', function() {
       highWaterMark: 8
     })
     .pipe(sepstream(function(data) {
-      return data.toString().replace(/0123456789/, 'abcdefghij');
+      return new Buffer(data.toString().replace(/0123456789/, 'abcdefghij'));
     }, {
       highWaterMark: 16
     }))
@@ -232,7 +232,7 @@ describe('sepstream', function() {
       highWaterMark: 16
     })
     .pipe(sepstream(function(data) {
-      return data.toString().replace(/0123456789/, 'abcdefghij');
+      return new Buffer(data.toString().replace(/0123456789/, 'abcdefghij'));
     }, {
       highWaterMark: 8
     }))
