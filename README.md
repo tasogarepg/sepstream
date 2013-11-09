@@ -27,7 +27,7 @@ fs.createReadStream('/path/to/file1')
 .pipe(sepstream(function(data) {
   var str = data.toString();          // data comes for every line.
   str = str.replace(/abcd/, 'efgh');  // modify str
-  return str;                         // send to next pipe
+  return new Buffer(str);             // send to next pipe
 }))
 .pipe(fs.createWriteStream('/path/to/file2'));
 ```
