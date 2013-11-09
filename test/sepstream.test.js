@@ -3,14 +3,28 @@ var path = require('path');
 var assert = require('assert');
 var sepstream = require('..');
 
-var fileOut = path.join(__dirname, 'out.dat');
-
 describe('sepstream', function() {
+  var fileCnt = 0;
+  var makePath = function(cnt) {
+    return path.join(__dirname, 'out_' + cnt + '.dat');
+  };
+  var getOutPath = function() {
+    return makePath(fileCnt++);
+  };
+
   after(function() {
-    fs.unlinkSync(fileOut);
+    for (var i = 0; i < fileCnt; i++) {
+      (function(i) {
+        var p = makePath(i);
+        fs.exists(p, function (exists) {
+          exists && fs.unlink(p, function(err){});
+        });
+      })(i);
+    }
   });
 
   it('simple pipe utf8.txt', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', 'utf8.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -26,6 +40,7 @@ describe('sepstream', function() {
   });
 
   it('simple pipe sjis.txt', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', 'sjis.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -41,6 +56,7 @@ describe('sepstream', function() {
   });
 
   it('simple pipe 4x1.txt', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -56,6 +72,7 @@ describe('sepstream', function() {
   });
 
   it('simple pipe 10x4.txt', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -71,6 +88,7 @@ describe('sepstream', function() {
   });
 
   it('simple pipe 10x4.txt with highWaterMark (r:8 s:8 w:8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn, {
       highWaterMark: 8
@@ -92,6 +110,7 @@ describe('sepstream', function() {
   });
 
   it('simple pipe 10x4.txt with highWaterMark (r:8 s:16 w:8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn, {
       highWaterMark: 8
@@ -113,6 +132,7 @@ describe('sepstream', function() {
   });
 
   it('simple pipe 10x4.txt with highWaterMark (r:16 s:8 w:8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn, {
       highWaterMark: 16
@@ -134,6 +154,7 @@ describe('sepstream', function() {
   });
 
   it('change data at func 4x1.txt', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '4x1.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -148,6 +169,7 @@ describe('sepstream', function() {
   });
 
   it('change data at func 10x4.txt', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -162,6 +184,7 @@ describe('sepstream', function() {
   });
 
   it('change data at func 10x4.txt with highWaterMark (r:8 s:8 w:8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn, {
       highWaterMark: 8
@@ -182,6 +205,7 @@ describe('sepstream', function() {
   });
 
   it('change data at func 10x4.txt with highWaterMark (r:8 s:16 w:8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn, {
       highWaterMark: 8
@@ -202,6 +226,7 @@ describe('sepstream', function() {
   });
 
   it('change data at func 10x4.txt with highWaterMark (r:16 s:8 w:8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
     fs.createReadStream(fileIn, {
       highWaterMark: 16
@@ -222,6 +247,7 @@ describe('sepstream', function() {
   });
 
   it('func not return val', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', 'utf8.txt');
     fs.createReadStream(fileIn)
     .pipe(sepstream(function(data) {
@@ -357,6 +383,7 @@ describe('sepstream', function() {
   });
 
   it('set encoding (r:utf8 s:utf8 w:utf8)', function(done) {
+    var fileOut = getOutPath();
     var fileIn = path.join(__dirname, 'fixtures', 'utf8.txt');
     fs.createReadStream(fileIn, {
       encoding: 'utf8'
