@@ -1,6 +1,6 @@
 {
   "name": "sepstream",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A stream separating utility",
   "keywords": ["stream", "separate", "split", "line"],
   "author": "tasogarepg <tasogare.pg@gmail.com>",

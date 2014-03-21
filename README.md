@@ -54,7 +54,7 @@ fs.createReadStream('/path/to/file1')
 .pipe(sepstream(function(data) {
   console.log(data);
 }, {
-  sep: new Buffer([0x32, 0x33, 0x34])
+  sep: [0x32, 0x33, 0x34]
 }))
 ```
 

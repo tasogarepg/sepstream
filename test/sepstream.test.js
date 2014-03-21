@@ -342,6 +342,46 @@ describe('sepstream', function() {
     });
   });
 
+  it('set array sep', function(done) {
+    var count = 0;
+    var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
+    fs.createReadStream(fileIn)
+    .pipe(sepstream(function(data) {
+      count++;
+      var expected;
+      if (count === 1) expected = '012';
+      else if (count !== 5) expected = '3456789\n012';
+      else if (count === 5) expected = '3456789';
+      assert.equal(data.toString(), expected);
+    }, {
+      sep: [0x32]
+    }))
+    .on('finish', function() {
+      assert.equal(count, 5);
+      done();
+    });
+  });
+
+  it('set multibyte array sep', function(done) {
+    var count = 0;
+    var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
+    fs.createReadStream(fileIn)
+    .pipe(sepstream(function(data) {
+      count++;
+      var expected;
+      if (count === 1) expected = '01234';
+      else if (count !== 5) expected = '56789\n01234';
+      else if (count === 5) expected = '56789';
+      assert.equal(data.toString(), expected);
+    }, {
+      sep: [0x32, 0x33, 0x34]
+    }))
+    .on('finish', function() {
+      assert.equal(count, 5);
+      done();
+    });
+  });
+
   it('set string sep', function(done) {
     var count = 0;
     var fileIn = path.join(__dirname, 'fixtures', '10x4.txt');
